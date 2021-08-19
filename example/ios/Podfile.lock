@@ -1,0 +1,41 @@
+PODS:
+  - AliPlayerSDK_iOS (5.4.0):
+    - AliPlayerSDK_iOS/AliPlayerSDK (= 5.4.0)
+  - AliPlayerSDK_iOS/AliPlayerSDK (5.4.0)
+  - Flutter (1.0.0)
+  - flutter_aliplayer (0.0.1):
+    - AliPlayerSDK_iOS (= 5.4.0)
+    - Flutter
+    - MJExtension
+  - loading_indicator_view (0.0.1):
+    - Flutter
+  - MJExtension (3.3.0)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - flutter_aliplayer (from `.symlinks/plugins/flutter_aliplayer/ios`)
+  - loading_indicator_view (from `.symlinks/plugins/loading_indicator_view/ios`)
+
+SPEC REPOS:
+  trunk:
+    - AliPlayerSDK_iOS
+    - MJExtension
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  flutter_aliplayer:
+    :path: ".symlinks/plugins/flutter_aliplayer/ios"
+  loading_indicator_view:
+    :path: ".symlinks/plugins/loading_indicator_view/ios"
+
+SPEC CHECKSUMS:
+  AliPlayerSDK_iOS: adb99e9427d1ee5357053fe49b9c1dfe25af1ef8
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  flutter_aliplayer: ceb07021f2af6498550bd2726d1e1bfeda36627a
+  loading_indicator_view: fb6f8efecc1cd030dc3a42a39f9107eef908da86
+  MJExtension: 01704cca2b60a214c10761b6491eab74069d68a9
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.10.1
