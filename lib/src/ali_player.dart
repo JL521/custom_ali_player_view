@@ -7,34 +7,30 @@ import 'package:flutter_aliplayer/flutter_aliplayer.dart';
 import 'package:loading_indicator_view/loading_indicator_view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 //阿里视频播放器
 class ASRAliPlayerView extends StatefulWidget {
   final double width;
   final double height;
   final String url;
   final bool autoPlay;
-  const ASRAliPlayerView(
-      this.url,
-    this.width,
-    this.height, {
-    Key key, this.autoPlay = true
-  }) : super(key: key);
+  const ASRAliPlayerView(this.url, this.width, this.height,
+      {Key key, this.autoPlay = true})
+      : super(key: key);
   @override
   _ASRAliPlayerViewState createState() {
     // TODO: implement createState
     return _ASRAliPlayerViewState();
   }
 }
-class _ASRAliPlayerViewState extends State<ASRAliPlayerView> {
 
+class _ASRAliPlayerViewState extends State<ASRAliPlayerView> {
   ASRAliPlayer aliPlayer = ASRAliPlayer();
   bool isFullScreen = false;
 
   @override
   void initState() {
     super.initState();
-    aliPlayer.setPlayer(widget.url,autoPlay: widget.autoPlay);
+    aliPlayer.setPlayer(widget.url, autoPlay: widget.autoPlay);
   }
 
   @override
@@ -45,18 +41,27 @@ class _ASRAliPlayerViewState extends State<ASRAliPlayerView> {
 
   @override
   Widget build(BuildContext context) {
-    return isFullScreen ?
-        Container(width: widget.width,height: widget.height):
-      _AliPlayerViewProvider(
-        aliPlayer: aliPlayer,
-        child: AliPlayerViewWithControls(pushFullScreenFunction: (){
-          _pushFullScreenWidget(context);
-          setState(() {
-            isFullScreen = true;
-          });
-          SystemChrome.setPreferredOrientations(
-              [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown,DeviceOrientation.landscapeLeft,DeviceOrientation.landscapeRight]);
-        },width: widget.width,height: widget.height,aliPlayer: aliPlayer,));
+    return isFullScreen
+        ? Container(width: widget.width, height: widget.height)
+        : _AliPlayerViewProvider(
+            aliPlayer: aliPlayer,
+            child: AliPlayerViewWithControls(
+              pushFullScreenFunction: () {
+                _pushFullScreenWidget(context);
+                setState(() {
+                  isFullScreen = true;
+                });
+                SystemChrome.setPreferredOrientations([
+                  DeviceOrientation.portraitUp,
+                  DeviceOrientation.portraitDown,
+                  DeviceOrientation.landscapeLeft,
+                  DeviceOrientation.landscapeRight
+                ]);
+              },
+              width: widget.width,
+              height: widget.height,
+              aliPlayer: aliPlayer,
+            ));
   }
 
   Future<dynamic> _pushFullScreenWidget(BuildContext context) async {
@@ -73,28 +78,36 @@ class _ASRAliPlayerViewState extends State<ASRAliPlayerView> {
   }
 
   Widget _fullScreenRoutePageBuilder(
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-      ) {
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
     final controllerProvider = _AliPlayerViewProvider(
         aliPlayer: aliPlayer,
-        child: AliPlayerViewWithControls(isFullScreen: true,width: 1.sw,height: 1.sh,aliPlayer: aliPlayer,popFullScreenFunction: (){
-          SystemChrome.setPreferredOrientations(
-              [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown,]);
-          Navigator.of(context,rootNavigator: true).pop();
-        },));
+        child: AliPlayerViewWithControls(
+          isFullScreen: true,
+          width: 1.sw,
+          height: 1.sh,
+          aliPlayer: aliPlayer,
+          popFullScreenFunction: () {
+            SystemChrome.setPreferredOrientations([
+              DeviceOrientation.portraitUp,
+              DeviceOrientation.portraitDown,
+            ]);
+            Navigator.of(context, rootNavigator: true).pop();
+          },
+        ));
 
     return _defaultRoutePageBuilder(
         context, animation, secondaryAnimation, controllerProvider);
   }
 
   AnimatedWidget _defaultRoutePageBuilder(
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-      _AliPlayerViewProvider controllerProvider,
-      ) {
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    _AliPlayerViewProvider controllerProvider,
+  ) {
     return AnimatedBuilder(
       animation: animation,
       builder: (BuildContext context, Widget child) {
@@ -104,10 +117,10 @@ class _ASRAliPlayerViewState extends State<ASRAliPlayerView> {
   }
 
   Widget _buildFullScreenVideo(
-      BuildContext context,
-      Animation<double> animation,
-      _AliPlayerViewProvider controllerProvider,
-      ) {
+    BuildContext context,
+    Animation<double> animation,
+    _AliPlayerViewProvider controllerProvider,
+  ) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
@@ -120,37 +133,44 @@ class _ASRAliPlayerViewState extends State<ASRAliPlayerView> {
       ),
     );
   }
-
 }
 
 //阿里视频播放视图和控制菜单
-class AliPlayerViewWithControls extends StatefulWidget{
+class AliPlayerViewWithControls extends StatefulWidget {
   final double width;
   final double height;
   final ASRAliPlayer aliPlayer;
   final pushFullScreenFunction;
   final popFullScreenFunction;
   final bool isFullScreen;
-  const AliPlayerViewWithControls({Key key, this.width, this.height, this.aliPlayer, this.pushFullScreenFunction, this.popFullScreenFunction, this.isFullScreen=false}) : super(key: key);
+  const AliPlayerViewWithControls(
+      {Key key,
+      this.width,
+      this.height,
+      this.aliPlayer,
+      this.pushFullScreenFunction,
+      this.popFullScreenFunction,
+      this.isFullScreen = false})
+      : super(key: key);
 
   @override
   _AliPlayerViewWithControlsState createState() {
     // TODO: implement createState
     return _AliPlayerViewWithControlsState();
   }
-
-
 }
-class _AliPlayerViewWithControlsState extends State<AliPlayerViewWithControls>{
 
+class _AliPlayerViewWithControlsState extends State<AliPlayerViewWithControls> {
   @override
   void initState() {
     super.initState();
     widget.aliPlayer.playerValue.addListener(listener);
   }
 
-  void listener(){
-    if(mounted){setState(() {});}
+  void listener() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -167,7 +187,7 @@ class _AliPlayerViewWithControlsState extends State<AliPlayerViewWithControls>{
     AliPlayerView aliPlayerView = AliPlayerView(
         onCreated: (int viewId) {
           aliPlayer.player.setPlayerView(viewId);
-          if(aliPlayer.playerValue.status<2){
+          if (aliPlayer.playerValue.status < 2) {
             aliPlayer.player.prepare();
           }
         },
@@ -176,22 +196,30 @@ class _AliPlayerViewWithControlsState extends State<AliPlayerViewWithControls>{
         width: widget.width,
         height: widget.height);
     // TODO: implement build
-    return OrientationBuilder(builder: (BuildContext context, Orientation orientation){
+    return OrientationBuilder(
+        builder: (BuildContext context, Orientation orientation) {
       return Container(
         width: widget.width,
-        height:widget.height,
+        height: widget.height,
         color: Colors.black,
         child: Stack(
           children: [
             Container(
               child: aliPlayerView,
             ),
-            Visibility(child: Container(
-              decoration: BoxDecoration(color: Colors.transparent),
-              width: widget.width,
-              height: widget.height,
-              child: AliPlayerControls(isFullScreen: widget.isFullScreen,pushFullScreenFunction: widget.pushFullScreenFunction,popFullScreenFunction: widget.popFullScreenFunction,),
-            ),visible: aliPlayer.playerValue.isPrepare,),
+            Visibility(
+              child: Container(
+                decoration: BoxDecoration(color: Colors.transparent),
+                width: widget.width,
+                height: widget.height,
+                child: AliPlayerControls(
+                  isFullScreen: widget.isFullScreen,
+                  pushFullScreenFunction: widget.pushFullScreenFunction,
+                  popFullScreenFunction: widget.popFullScreenFunction,
+                ),
+              ),
+              visible: aliPlayer.playerValue.isPrepare,
+            ),
           ],
         ),
       );
@@ -204,7 +232,12 @@ class AliPlayerControls extends StatefulWidget {
   final pushFullScreenFunction;
   final popFullScreenFunction;
   final bool isFullScreen;
-  const AliPlayerControls({Key key, this.pushFullScreenFunction, this.popFullScreenFunction, this.isFullScreen=false}) : super(key: key);
+  const AliPlayerControls(
+      {Key key,
+      this.pushFullScreenFunction,
+      this.popFullScreenFunction,
+      this.isFullScreen = false})
+      : super(key: key);
 
   @override
   AliPlayerControlsState createState() {
@@ -212,8 +245,8 @@ class AliPlayerControls extends StatefulWidget {
     return AliPlayerControlsState();
   }
 }
-class AliPlayerControlsState extends State<AliPlayerControls> {
 
+class AliPlayerControlsState extends State<AliPlayerControls> {
   bool isShowControls = true;
   Timer _hideTimer;
   ASRAliPlayer aliPlayer;
@@ -277,8 +310,8 @@ class AliPlayerControlsState extends State<AliPlayerControls> {
               ),
               Expanded(
                   child: Container(
-                    color: Colors.transparent,
-                  )),
+                color: Colors.transparent,
+              )),
               AnimatedOpacity(
                 opacity: isShowControls ? 1.0 : 0.0,
                 duration: Duration(milliseconds: 300),
@@ -294,8 +327,11 @@ class AliPlayerControlsState extends State<AliPlayerControls> {
                               aliPlayer.player.pause();
                             } else {
                               aliPlayer.player.play();
-                              if (aliPlayer.playerValue.status == 6 && aliPlayer.playerValue.position == aliPlayer.playerValue.duration) {
-                                aliPlayer.player.seekTo(0, FlutterAvpdef.ACCURATE);
+                              if (aliPlayer.playerValue.status == 6 &&
+                                  aliPlayer.playerValue.position ==
+                                      aliPlayer.playerValue.duration) {
+                                aliPlayer.player
+                                    .seekTo(0, FlutterAvpdef.ACCURATE);
                               }
                             }
                           },
@@ -334,10 +370,12 @@ class AliPlayerControlsState extends State<AliPlayerControls> {
                       ),
                       GestureDetector(
                           onTap: () {
-                            if(widget.pushFullScreenFunction!=null&&widget.isFullScreen==false){
+                            if (widget.pushFullScreenFunction != null &&
+                                widget.isFullScreen == false) {
                               widget.pushFullScreenFunction();
                             }
-                            if(widget.popFullScreenFunction!=null&&widget.isFullScreen==true){
+                            if (widget.popFullScreenFunction != null &&
+                                widget.isFullScreen == true) {
                               widget.popFullScreenFunction();
                             }
                           },
@@ -361,13 +399,13 @@ class AliPlayerControlsState extends State<AliPlayerControls> {
       ),
     );
   }
+
   //缓冲进度
   _buildProgressBar() {
     if (aliPlayer.playerValue.isShowLoadingProgress != null &&
         aliPlayer.playerValue.isShowLoadingProgress) {
       return Center(
-        child: LineSpinFadeLoaderIndicator(
-        ),
+        child: LineSpinFadeLoaderIndicator(),
       );
     } else {
       return SizedBox();
@@ -387,8 +425,7 @@ class _AliPlayerViewProvider extends InheritedWidget {
         super(key: key, child: child);
 
   static _AliPlayerViewProvider of(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<_AliPlayerViewProvider>();
+    return context.dependOnInheritedWidgetOfExactType<_AliPlayerViewProvider>();
   }
 
   @override
@@ -401,13 +438,13 @@ class _AliPlayerViewProvider extends InheritedWidget {
 //进度条设置
 class CupertinoVideoProgressBar extends StatefulWidget {
   CupertinoVideoProgressBar(
-      this.aliPlayer, {
-        ChewieProgressColors colors,
-        this.onDragEnd,
-        this.onDragStart,
-        this.onDragUpdate,
-        Key key,
-      })  : colors = colors ?? ChewieProgressColors(),
+    this.aliPlayer, {
+    ChewieProgressColors colors,
+    this.onDragEnd,
+    this.onDragStart,
+    this.onDragUpdate,
+    Key key,
+  })  : colors = colors ?? ChewieProgressColors(),
         super(key: key);
 
   final ASRAliPlayer aliPlayer;
@@ -421,6 +458,7 @@ class CupertinoVideoProgressBar extends StatefulWidget {
     return _VideoProgressBarState();
   }
 }
+
 class _VideoProgressBarState extends State<CupertinoVideoProgressBar> {
   bool _controllerWasPlaying = false;
 
@@ -433,8 +471,8 @@ class _VideoProgressBarState extends State<CupertinoVideoProgressBar> {
       final double relative = tapPos.dx < 0
           ? 0
           : tapPos.dx > box.size.width
-          ? 1
-          : tapPos.dx / box.size.width;
+              ? 1
+              : tapPos.dx / box.size.width;
       final double position = controller.playerValue.duration * relative;
       controller.playerValue.setValue(position: position.floor());
       controller.playerValue = controller.playerValue;
@@ -501,6 +539,7 @@ class _VideoProgressBarState extends State<CupertinoVideoProgressBar> {
     );
   }
 }
+
 class _ProgressBarPainter extends CustomPainter {
   _ProgressBarPainter(this.value, this.colors);
 
@@ -533,10 +572,10 @@ class _ProgressBarPainter extends CustomPainter {
     }
     final double playedPartPercent = value.position / value.duration;
     final double playedPart =
-    playedPartPercent > 1 ? size.width : playedPartPercent * size.width;
+        playedPartPercent > 1 ? size.width : playedPartPercent * size.width;
     final double bufferedPercent = value.buffered / value.duration;
     final double bufferdPart =
-    bufferedPercent > 1 ? size.width : bufferedPercent * size.width;
+        bufferedPercent > 1 ? size.width : bufferedPercent * size.width;
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromPoints(
@@ -570,6 +609,7 @@ class _ProgressBarPainter extends CustomPainter {
     );
   }
 }
+
 class ChewieProgressColors {
   ChewieProgressColors({
     Color playedColor = const Color.fromRGBO(255, 0, 0, 0.7),
@@ -586,19 +626,6 @@ class ChewieProgressColors {
   final Paint handlePaint;
   final Paint backgroundPaint;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 class MultiplePlayerBetweenPageA extends StatefulWidget {
   final String playerId;
@@ -636,10 +663,13 @@ class _MultiplePlayerBetweenPageAState
         children: [
           Container(
             width: 1.sw,
-            height: 1.sw*9/16,
-            child: ASRAliPlayerView('https://vcdn.jiazhangkj.com/sv/3f789d73-177ec4cc77f/3f789d73-177ec4cc77f.mp4',1.sw, 1.sw*9/16,),
+            height: 1.sw * 9 / 16,
+            child: ASRAliPlayerView(
+              'https://vcdn.jiazhangkj.com/sv/3f789d73-177ec4cc77f/3f789d73-177ec4cc77f.mp4',
+              1.sw,
+              1.sw * 9 / 16,
+            ),
           ),
-
         ],
       ),
     );
