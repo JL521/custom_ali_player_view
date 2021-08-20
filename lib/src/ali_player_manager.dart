@@ -15,8 +15,8 @@ void stopAliPlayers() {
 }
 
 class ASRAliPlayer {
-  FlutterAliplayer player;
-  AliPlayerValue playerValue;
+  late FlutterAliplayer player;
+  late AliPlayerValue playerValue;
 
   void setPlayer(String url, {bool autoPlay = true}) {
     stopAliPlayers();
@@ -24,7 +24,7 @@ class ASRAliPlayer {
     player = FlutterAliPlayerFactory.createAliPlayer(playerId: playerId);
     player.setAutoPlay(autoPlay);
     player.setUrl(url);
-    playerValue = AliPlayerValue();
+    playerValue = AliPlayerValue(position: 0,status: 0,isPlaying: false,isPrepare: false,duration: 0,buffered: 0,aspectRatio: 1,isShowLoadingProgress: false,videoHeight: 0,videoWidth: 0);
     players[playerId] = this;
     playerID = playerID + 1;
     initListener();
@@ -32,49 +32,49 @@ class ASRAliPlayer {
 
   initListener() {
     player.setOnPrepared((playerId) {
-      players[playerId].player.getMediaInfo().then((info) {
+      players[playerId]!.player.getMediaInfo().then((info) {
         print("视频信息===" + info.toString());
         int duration = info['duration'];
-        players[playerId].playerValue.setValue(
+        players[playerId]!.playerValue.setValue(
             position: 0, duration: duration.floorToDouble(), isPrepare: true);
-        players[playerId].player.seekTo(0, FlutterAvpdef.ACCURATE);
+        players[playerId]!.player.seekTo(0, FlutterAvpdef.ACCURATE);
       });
     });
     player.setOnInfo((infoCode, extraValue, extraMsg, playerId) {
       print('playerId====$playerId ======== $extraValue ====$infoCode');
       if (infoCode == FlutterAvpdef.CURRENTPOSITION) {
-        players[playerId].playerValue.setValue(position: extraValue);
+        players[playerId]!.playerValue.setValue(position: extraValue);
       } else if (infoCode == FlutterAvpdef.BUFFEREDPOSITION) {
-        players[playerId].playerValue.setValue(buffered: extraValue);
+        players[playerId]!.playerValue.setValue(buffered: extraValue);
       }
     });
     player.setOnError((errorCode, errorExtra, errorMsg, playerId) {
-      players[playerId].playerValue.setValue(isShowLoadingProgress: false);
+      players[playerId]!.playerValue.setValue(isShowLoadingProgress: false);
     });
     player.setOnStateChanged((newState, playerId) {
       if (newState == FlutterAvpdef.started) {
-        players[playerId]
+        players[playerId]!
             .playerValue
             .setValue(isShowLoadingProgress: false, isPlaying: true);
       } else {
-        players[playerId].playerValue.setValue(isPlaying: false);
+        players[playerId]!.playerValue.setValue(isPlaying: false);
       }
-      players[playerId].playerValue.setValue(status: newState);
+      players[playerId]!.playerValue.setValue(status: newState);
       if (newState == FlutterAvpdef.completion) {
-        players[playerId].player.seekTo(0, FlutterAvpdef.ACCURATE);
+        players[playerId]!.player.seekTo(0, FlutterAvpdef.ACCURATE);
       }
     });
     player.setOnLoadingStatusListener(loadingBegin: (playerId) {
-      players[playerId].playerValue.setValue(isShowLoadingProgress: true);
+      players[playerId]!.playerValue.setValue(isShowLoadingProgress: true);
     }, loadingProgress: (percent, netSpeed, playerId) {
       if (percent == 100) {
-        players[playerId].playerValue.setValue(isShowLoadingProgress: false);
+        players[playerId]!.playerValue.setValue(isShowLoadingProgress: false);
       }
     }, loadingEnd: (playerId) {
-      players[playerId].playerValue.setValue(isShowLoadingProgress: false);
+      players[playerId]!.playerValue.setValue(isShowLoadingProgress: false);
     });
     player.setOnCompletion((playerId) {
-      players[playerId].playerValue.setValue(isShowLoadingProgress: false);
+      players[playerId]!.playerValue.setValue(isShowLoadingProgress: false);
     });
   }
 
@@ -86,30 +86,30 @@ class ASRAliPlayer {
 }
 
 class AliPlayerValue with ChangeNotifier {
-  bool isPrepare;
-  bool isPlaying;
-  int position;
-  double duration;
-  int buffered;
-  int status;
-  double aspectRatio;
-  double videoWidth;
-  double videoHeight;
-  bool isShowLoadingProgress;
-  String playerId;
+  bool? isPrepare;
+  bool? isPlaying;
+  int? position;
+  double? duration;
+  int? buffered;
+  int? status;
+  double? aspectRatio;
+  double? videoWidth;
+  double? videoHeight;
+  bool? isShowLoadingProgress;
+  String? playerId;
 
   AliPlayerValue(
-      {int position = 0,
-      int status = 0,
-      bool isPrepare = false,
-      bool isPlaying = false,
-      double duration = 0,
-      int buffered = 0,
-      double aspectRatio = 1,
-      double videoWidth,
-      double videoHeight,
-      bool isShowLoadingProgress = false,
-      String playerId}) {
+      {int? position = 0,
+      int? status = 0,
+      bool? isPrepare = false,
+      bool? isPlaying = false,
+      double? duration = 0,
+      int? buffered = 0,
+      double? aspectRatio = 1,
+      double? videoWidth,
+      double? videoHeight,
+      bool? isShowLoadingProgress = false,
+      String? playerId}) {
     this.position = position;
     this.status = status;
     this.isPrepare = isPrepare;
@@ -124,17 +124,17 @@ class AliPlayerValue with ChangeNotifier {
   }
 
   void setValue(
-      {int position,
-      int status,
-      bool isPrepare,
-      bool isPlaying,
-      double duration,
-      int buffered,
-      double aspectRatio,
-      double videoWidth,
-      double videoHeight,
-      bool isShowLoadingProgress,
-      String playerId}) {
+      {int? position,
+      int? status,
+      bool? isPrepare,
+      bool? isPlaying,
+      double? duration,
+      int? buffered,
+      double? aspectRatio,
+      double? videoWidth,
+      double? videoHeight,
+      bool? isShowLoadingProgress,
+      String? playerId}) {
     if (position != null) {
       this.position = position;
     }

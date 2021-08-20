@@ -14,7 +14,7 @@ class ASRAliPlayerView extends StatefulWidget {
   final String url;
   final bool autoPlay;
   const ASRAliPlayerView(this.url, this.width, this.height,
-      {Key key, this.autoPlay = true})
+      {Key? key, this.autoPlay = true})
       : super(key: key);
   @override
   _ASRAliPlayerViewState createState() {
@@ -110,7 +110,7 @@ class _ASRAliPlayerViewState extends State<ASRAliPlayerView> {
   ) {
     return AnimatedBuilder(
       animation: animation,
-      builder: (BuildContext context, Widget child) {
+      builder: (BuildContext context, Widget? child) {
         return _buildFullScreenVideo(context, animation, controllerProvider);
       },
     );
@@ -144,10 +144,10 @@ class AliPlayerViewWithControls extends StatefulWidget {
   final popFullScreenFunction;
   final bool isFullScreen;
   const AliPlayerViewWithControls(
-      {Key key,
-      this.width,
-      this.height,
-      this.aliPlayer,
+      {Key? key,
+      required this.width,
+      required this.height,
+      required this.aliPlayer,
       this.pushFullScreenFunction,
       this.popFullScreenFunction,
       this.isFullScreen = false})
@@ -182,12 +182,12 @@ class _AliPlayerViewWithControlsState extends State<AliPlayerViewWithControls> {
   @override
   Widget build(BuildContext context) {
     ASRAliPlayer aliPlayer = context
-        .dependOnInheritedWidgetOfExactType<_AliPlayerViewProvider>()
+        .dependOnInheritedWidgetOfExactType<_AliPlayerViewProvider>()!
         .aliPlayer;
     AliPlayerView aliPlayerView = AliPlayerView(
         onCreated: (int viewId) {
           aliPlayer.player.setPlayerView(viewId);
-          if (aliPlayer.playerValue.status < 2) {
+          if (aliPlayer.playerValue.status! < 2) {
             aliPlayer.player.prepare();
           }
         },
@@ -218,7 +218,7 @@ class _AliPlayerViewWithControlsState extends State<AliPlayerViewWithControls> {
                   popFullScreenFunction: widget.popFullScreenFunction,
                 ),
               ),
-              visible: aliPlayer.playerValue.isPrepare,
+              visible: aliPlayer.playerValue.isPrepare!,
             ),
           ],
         ),
@@ -233,7 +233,7 @@ class AliPlayerControls extends StatefulWidget {
   final popFullScreenFunction;
   final bool isFullScreen;
   const AliPlayerControls(
-      {Key key,
+      {Key? key,
       this.pushFullScreenFunction,
       this.popFullScreenFunction,
       this.isFullScreen = false})
@@ -248,8 +248,8 @@ class AliPlayerControls extends StatefulWidget {
 
 class AliPlayerControlsState extends State<AliPlayerControls> {
   bool isShowControls = true;
-  Timer _hideTimer;
-  ASRAliPlayer aliPlayer;
+  Timer? _hideTimer;
+  late ASRAliPlayer aliPlayer;
 
   @override
   void didChangeDependencies() {
@@ -261,7 +261,7 @@ class AliPlayerControlsState extends State<AliPlayerControls> {
       _hideTimer = Timer(const Duration(seconds: 3), () {
         setState(() {
           isShowControls = false;
-          _hideTimer.cancel();
+          _hideTimer?.cancel();
           _hideTimer = null;
         });
       });
@@ -278,7 +278,7 @@ class AliPlayerControlsState extends State<AliPlayerControls> {
   @override
   Widget build(BuildContext context) {
     aliPlayer = context
-        .dependOnInheritedWidgetOfExactType<_AliPlayerViewProvider>()
+        .dependOnInheritedWidgetOfExactType<_AliPlayerViewProvider>()!
         .aliPlayer;
     // TODO: implement build
     return GestureDetector(
@@ -289,7 +289,7 @@ class AliPlayerControlsState extends State<AliPlayerControls> {
             _startTimer();
           } else {
             if (_hideTimer != null) {
-              _hideTimer.cancel();
+              _hideTimer?.cancel();
               _hideTimer = null;
             }
           }
@@ -323,7 +323,7 @@ class AliPlayerControlsState extends State<AliPlayerControls> {
                     children: [
                       GestureDetector(
                           onTap: () {
-                            if (aliPlayer.playerValue.isPlaying) {
+                            if (aliPlayer.playerValue.isPlaying!) {
                               aliPlayer.player.pause();
                             } else {
                               aliPlayer.player.play();
@@ -337,7 +337,7 @@ class AliPlayerControlsState extends State<AliPlayerControls> {
                           },
                           child: Container(
                             child: Icon(
-                              aliPlayer.playerValue.isPlaying
+                              aliPlayer.playerValue.isPlaying!
                                   ? Icons.pause
                                   : Icons.play_circle_outline,
                               color: Colors.white,
@@ -347,7 +347,7 @@ class AliPlayerControlsState extends State<AliPlayerControls> {
                       Container(
                         child: Text(
                           FormatterUtils.getTimeformatByMs(
-                              aliPlayer.playerValue.position),
+                              aliPlayer.playerValue.position!),
                           style: TextStyle(color: Colors.white, fontSize: 15),
                         ),
                       ),
@@ -364,7 +364,7 @@ class AliPlayerControlsState extends State<AliPlayerControls> {
                       Container(
                         child: Text(
                           FormatterUtils.getTimeformatByMs(
-                              aliPlayer.playerValue.duration.floor()),
+                              aliPlayer.playerValue.duration!.floor()),
                           style: TextStyle(color: Colors.white, fontSize: 15),
                         ),
                       ),
@@ -403,7 +403,7 @@ class AliPlayerControlsState extends State<AliPlayerControls> {
   //缓冲进度
   _buildProgressBar() {
     if (aliPlayer.playerValue.isShowLoadingProgress != null &&
-        aliPlayer.playerValue.isShowLoadingProgress) {
+        aliPlayer.playerValue.isShowLoadingProgress!) {
       return Center(
         child: LineSpinFadeLoaderIndicator(),
       );
@@ -417,14 +417,12 @@ class AliPlayerControlsState extends State<AliPlayerControls> {
 class _AliPlayerViewProvider extends InheritedWidget {
   final ASRAliPlayer aliPlayer;
   _AliPlayerViewProvider({
-    Key key,
-    @required this.aliPlayer,
-    @required Widget child,
-  })  : assert(aliPlayer != null),
-        assert(child != null),
-        super(key: key, child: child);
+    Key? key,
+    required this.aliPlayer,
+    required Widget child,
+  })  :super(key: key, child: child);
 
-  static _AliPlayerViewProvider of(BuildContext context) {
+  static _AliPlayerViewProvider? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<_AliPlayerViewProvider>();
   }
 
@@ -439,19 +437,19 @@ class _AliPlayerViewProvider extends InheritedWidget {
 class CupertinoVideoProgressBar extends StatefulWidget {
   CupertinoVideoProgressBar(
     this.aliPlayer, {
-    ChewieProgressColors colors,
-    this.onDragEnd,
-    this.onDragStart,
-    this.onDragUpdate,
-    Key key,
+     ChewieProgressColors? colors,
+     this.onDragEnd,
+     this.onDragStart,
+     this.onDragUpdate,
+    Key? key,
   })  : colors = colors ?? ChewieProgressColors(),
         super(key: key);
 
   final ASRAliPlayer aliPlayer;
   final ChewieProgressColors colors;
-  final Function() onDragStart;
-  final Function() onDragEnd;
-  final Function() onDragUpdate;
+  final Function()? onDragStart;
+  final Function()? onDragEnd;
+  final Function()? onDragUpdate;
 
   @override
   _VideoProgressBarState createState() {
@@ -473,7 +471,7 @@ class _VideoProgressBarState extends State<CupertinoVideoProgressBar> {
           : tapPos.dx > box.size.width
               ? 1
               : tapPos.dx / box.size.width;
-      final double position = controller.playerValue.duration * relative;
+      final double position = controller.playerValue.duration! * relative;
       controller.playerValue.setValue(position: position.floor());
       controller.playerValue = controller.playerValue;
     });
@@ -483,26 +481,26 @@ class _VideoProgressBarState extends State<CupertinoVideoProgressBar> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onHorizontalDragStart: (DragStartDetails details) {
-        if (!controller.playerValue.isPrepare) {
+        if (!controller.playerValue.isPrepare!) {
           return;
         }
-        _controllerWasPlaying = controller.playerValue.isPlaying;
+        _controllerWasPlaying = controller.playerValue.isPlaying!;
         if (_controllerWasPlaying) {
           controller.player.pause();
         }
 
         if (widget.onDragStart != null) {
-          widget.onDragStart();
+          widget.onDragStart!();
         }
       },
       onHorizontalDragUpdate: (DragUpdateDetails details) {
-        if (!controller.playerValue.isPrepare) {
+        if (!controller.playerValue.isPrepare!) {
           return;
         }
         seekToRelativePosition(details.globalPosition);
 
         if (widget.onDragUpdate != null) {
-          widget.onDragUpdate();
+          widget.onDragUpdate!();
         }
       },
       onHorizontalDragEnd: (DragEndDetails details) {
@@ -510,18 +508,18 @@ class _VideoProgressBarState extends State<CupertinoVideoProgressBar> {
           controller.player.play();
         }
         if (widget.onDragEnd != null) {
-          widget.onDragEnd();
+          widget.onDragEnd!();
         }
         controller.player.seekTo(
-            controller.playerValue.position.floor(), FlutterAvpdef.ACCURATE);
+            controller.playerValue.position!.floor(), FlutterAvpdef.ACCURATE);
       },
       onTapDown: (TapDownDetails details) {
-        if (!controller.playerValue.isPrepare) {
+        if (!controller.playerValue.isPrepare!) {
           return;
         }
         seekToRelativePosition(details.globalPosition);
         controller.player.seekTo(
-            controller.playerValue.position.floor(), FlutterAvpdef.ACCURATE);
+            controller.playerValue.position!.floor(), FlutterAvpdef.ACCURATE);
       },
       child: Center(
         child: Container(
@@ -567,13 +565,13 @@ class _ProgressBarPainter extends CustomPainter {
       ),
       colors.backgroundPaint,
     );
-    if (!value.isPrepare) {
+    if (!value.isPrepare!) {
       return;
     }
-    final double playedPartPercent = value.position / value.duration;
+    final double playedPartPercent = value.position! / value.duration!;
     final double playedPart =
         playedPartPercent > 1 ? size.width : playedPartPercent * size.width;
-    final double bufferedPercent = value.buffered / value.duration;
+    final double bufferedPercent = value.buffered! / value.duration!;
     final double bufferdPart =
         bufferedPercent > 1 ? size.width : bufferedPercent * size.width;
     canvas.drawRRect(
@@ -625,53 +623,4 @@ class ChewieProgressColors {
   final Paint bufferedPaint;
   final Paint handlePaint;
   final Paint backgroundPaint;
-}
-
-class MultiplePlayerBetweenPageA extends StatefulWidget {
-  final String playerId;
-  const MultiplePlayerBetweenPageA({Key key, this.playerId}) : super(key: key);
-
-  @override
-  _MultiplePlayerBetweenPageAState createState() =>
-      _MultiplePlayerBetweenPageAState();
-}
-
-class _MultiplePlayerBetweenPageAState
-    extends State<MultiplePlayerBetweenPageA> {
-//   ASRAliPlayer player = ASRAliPlayer();
-
-  @override
-  void initState() {
-    super.initState();
-//    player.setPlayer('https://vcdn.jiazhangkj.com/sv/3f789d73-177ec4cc77f/3f789d73-177ec4cc77f.mp4', 'AAAAA',autoPlay: true);
-  }
-
-//  @override
-//  void dispose() {
-//    super.dispose();
-//    player.dispose();
-//  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("多实例播放测试界面A"),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          Container(
-            width: 1.sw,
-            height: 1.sw * 9 / 16,
-            child: ASRAliPlayerView(
-              'https://vcdn.jiazhangkj.com/sv/3f789d73-177ec4cc77f/3f789d73-177ec4cc77f.mp4',
-              1.sw,
-              1.sw * 9 / 16,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

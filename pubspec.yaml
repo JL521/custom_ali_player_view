@@ -1,14 +1,10 @@
 name: custom_ali_player_view
-description: Secondary packaging and Optimization Based on Ali player, improvement and optimization of Ali player
-  1. It supports user-defined width and height of the interface and can be used anywhere
-  2. Support video full screen playback and internal full screen logic
-  3. Support player multi page instantiation
-  4. Manage the player uniformly to ensure the uniqueness of the player ID
+description: Package and optimize Alibaba player, improve and optimize Alibaba player
 version: 0.0.2
 homepage: https://github.com/JL521/custom_ali_player_view.git
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
