@@ -1,7 +1,7 @@
 name: custom_ali_player_view
 description: 完善优化阿里播放器(支持全屏、多页面实例化)
 version: 0.0.1
-homepage:
+homepage: https://github.com/JL521/custom_ali_player_view.git
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
