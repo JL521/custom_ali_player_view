@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:custom_ali_player_view/src/ali_player_manager.dart';
 import 'package:custom_ali_player_view/src/format_utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_aliplayer/flutter_aliplayer.dart';
-import 'package:loading_indicator_view/loading_indicator_view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 //阿里视频播放器
@@ -405,7 +405,7 @@ class AliPlayerControlsState extends State<AliPlayerControls> {
     if (aliPlayer.playerValue.isShowLoadingProgress != null &&
         aliPlayer.playerValue.isShowLoadingProgress!) {
       return Center(
-        child: LineSpinFadeLoaderIndicator(),
+        child: CupertinoActivityIndicator(),
       );
     } else {
       return SizedBox();

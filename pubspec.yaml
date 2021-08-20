@@ -12,7 +12,6 @@ dependencies:
     sdk: flutter
   flutter_aliplayer: ^5.4.0
   flutter_screenutil: ^5.0.0+2
-  loading_indicator_view: ^1.1.0
 
 dev_dependencies:
   flutter_test:
