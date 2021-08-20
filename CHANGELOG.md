@@ -1,11 +1,8 @@
-## [0.0.1] - TODO: Add release date.
+## [0.0.2] - TODO: 2021/08/20
+支持nullSafe
 
-* TODO: Describe initial release.
+## [0.0.1] - TODO: 2021/08/20
+阿里播放器封装
 
 
-## [0.0.2] - TODO: Add release date.
-优化
-
-## [0.0.3] - TODO: Add release date.
-支持nullsafe
 
