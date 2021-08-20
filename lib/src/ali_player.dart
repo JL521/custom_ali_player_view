@@ -420,7 +420,7 @@ class _AliPlayerViewProvider extends InheritedWidget {
     Key? key,
     required this.aliPlayer,
     required Widget child,
-  })  :super(key: key, child: child);
+  }) : super(key: key, child: child);
 
   static _AliPlayerViewProvider? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<_AliPlayerViewProvider>();
@@ -437,10 +437,10 @@ class _AliPlayerViewProvider extends InheritedWidget {
 class CupertinoVideoProgressBar extends StatefulWidget {
   CupertinoVideoProgressBar(
     this.aliPlayer, {
-     ChewieProgressColors? colors,
-     this.onDragEnd,
-     this.onDragStart,
-     this.onDragUpdate,
+    ChewieProgressColors? colors,
+    this.onDragEnd,
+    this.onDragStart,
+    this.onDragUpdate,
     Key? key,
   })  : colors = colors ?? ChewieProgressColors(),
         super(key: key);

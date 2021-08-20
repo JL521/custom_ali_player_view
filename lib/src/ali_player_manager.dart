@@ -24,7 +24,17 @@ class ASRAliPlayer {
     player = FlutterAliPlayerFactory.createAliPlayer(playerId: playerId);
     player.setAutoPlay(autoPlay);
     player.setUrl(url);
-    playerValue = AliPlayerValue(position: 0,status: 0,isPlaying: false,isPrepare: false,duration: 0,buffered: 0,aspectRatio: 1,isShowLoadingProgress: false,videoHeight: 0,videoWidth: 0);
+    playerValue = AliPlayerValue(
+        position: 0,
+        status: 0,
+        isPlaying: false,
+        isPrepare: false,
+        duration: 0,
+        buffered: 0,
+        aspectRatio: 1,
+        isShowLoadingProgress: false,
+        videoHeight: 0,
+        videoWidth: 0);
     players[playerId] = this;
     playerID = playerID + 1;
     initListener();
