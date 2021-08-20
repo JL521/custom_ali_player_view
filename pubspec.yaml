@@ -1,6 +1,6 @@
 name: custom_ali_player_view
 description: Package and optimize Alibaba player, improve and optimize Alibaba player
-version: 0.0.4
+version: 0.0.5
 homepage: https://github.com/JL521/custom_ali_player_view.git
 
 environment:
