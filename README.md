@@ -19,7 +19,14 @@ For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials, 
 samples, guidance on mobile development, and a full API reference.
 
-2.关闭国内镜像
+使用方法（url,width,height）;
+ ASRAliPlayerView(
+ 'https://vcdn.jiazhangkj.com/sv/3f789d73-177ec4cc77f/3f789d73-177ec4cc77f.mp4',
+  400, 400),
+
+
+
+.关闭国内镜像
 我这里用的zsh，用bash的切换到.bash_profile文件
 
 vim ~/.zshrc
